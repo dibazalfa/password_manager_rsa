@@ -28,21 +28,26 @@ export const useApp = defineStore({
     state: () => ({
         users: [],
         input: {
-            user: {},
+            user: {
+                account: "",
+                password: "",
+                key: "",
+            },
         }
     }),
     actions: {
         async Create(user) {
-            await axios.post('https://127.0.0.1:3000/create', {
-                account: user.account,
-                password: user.password 
+            // console.log(`account: ${this.input.user.account}`);
+            // console.log(`password: ${this.input.user.password}`);
+            // console.log(`key: ${this.input.user.key}`);
+            await axios.post('http://localhost:3000/create', {
+                account: this.input.user.account,
+                password: this.input.user.password,
+                key: this.input.user.key
             })
             .then((response) => {
                 if (response.status) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success Create Password'
-                    })
+                    console.log(response);
                 }
             })
         }
