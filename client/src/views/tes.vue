@@ -1,7 +1,7 @@
 <template>
-  <div class="h-screen bg-gradient-to-r from-pink-300 to-violet-300">
+  <div class="bg-gray-50 h-screen">
     <!--Sidebar with Dimmer -->
-    <div class="fixed inset-0 flex z-40">
+    <div class="sticky inset-0 flex z-40">
       <!-- Sidebar -->
       <div
         class="absolute flex top-0 h-screen z-20"
@@ -10,7 +10,7 @@
         <!--Drawer -->
         <button
           @click.prevent="toggle()"
-          class="w-12 h-48 my-auto rounded text-white bg-gray-600 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300"
+          class="w-12 h-48 my-auto rounded text-white bg-gray-400 text-center focus:outline-none hover:bg-gray-500 transition-color duration-300"
         >
           <span
             :class="[right ? '-rotate-90' : 'rotate-90']"
@@ -27,9 +27,7 @@
           :class="[open ? 'max-w-lg' : 'max-w-0']"
         >
           <div class="w-48 text-center font-bold text-xl">
-            <div class="w-full h-20 border-b flex px-4 items-center mb-8">
-              <p class="font-semibold text-3xl text-blue-400 pl-4">LOGO</p>
-            </div>
+            <div class="w-full h-20 border-b flex px-4 items-center mb-8"></div>
 
             <div class="">
               <div
@@ -80,33 +78,18 @@
     </div>
     <div class="sticky top-0 z-40">
       <div
-        class="w-full h-20 px-6 bg-gray-100 border-b flex items-center justify-between"
+        class="h-20 px-6 bg-gray-100 border-b flex items-center justify-between"
       >
         <!-- left navbar -->
         <div class="flex">
           <!-- mobile hamburger -->
-          <div class="inline-block lg:hidden flex items-center mr-4">
-            <button
-              class="hover:text-blue-500 hover:border-white focus:outline-none navbar-burger"
-            >
-              <svg
-                class="h-5 w-5"
-                v-bind:style="{ fill: 'black' }"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Menu</title>
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-              </svg>
-            </button>
-          </div>
 
           <!-- search bar -->
           <div class="relative text-gray-600">
             <input
               type="search"
               name="serch"
-              placeholder="Search products..."
+              placeholder="Search"
               class="bg-white h-10 w-full xl:w-64 px-5 rounded-lg border text-sm focus:outline-none"
             />
             <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
@@ -155,19 +138,112 @@
     </div>
 
     <!-- page content -->
-    <div class="mt-28 ml-64 w-2/3 ">
-      <div class="bg-violet-100 rounded-xl p-5 h-auto">
-        
-        <!-- <p class="mb-2 mr-2 text-black text-sm">
-        Transfer via card number
-      </p> -->
+    <div class="mt-8 flex flex-col justify-center sm:py-12">
+      <div class="relative py-4 sm:max-w-xl sm:mx-auto">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-pink-300 to-violet-300 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
+        ></div>
+        <div
+          class="relative py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20"
+        >
+          <div class="max-w-md mx-auto">
+            <div>
+              <h1 class="text-2xl font-semibold">Check Your Accounts</h1>
+            </div>
+            <div class="divide-y divide-gray-200">
+              <div
+                class="py-8 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7"
+              >
+                <div class="relative">
+                  <input
+                    autocomplete="off"
+                    id="account"
+                    name="account"
+                    type="text"
+                    class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                    placeholder="Input Account"
+                    v-model="App.input.user.account"
+                  />
+                  <label
+                    for="account"
+                    class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    >Input Account</label
+                  >
+                </div>
+                <div class="relative">
+                  <input
+                    autocomplete="off"
+                    id="username"
+                    name="username"
+                    type="text"
+                    class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                    placeholder="Input username"
+                  />
+                  <label
+                    for="username"
+                    class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    >Input Username</label
+                  >
+                </div>
+                <div class="relative">
+                  <input
+                    autocomplete="off"
+                    id="password"
+                    name="password"
+                    type="password"
+                    class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                    placeholder="Password"
+                    v-model="App.input.user.password"
+                  />
+                  <label
+                    for="password"
+                    class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    >Password</label
+                  >
+                </div>
+                <div class="relative">
+                  <input
+                    autocomplete="off"
+                    id="key"
+                    name="key"
+                    type="password"
+                    class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
+                    placeholder="key"
+                    v-model="App.input.user.key"
+                  />
+                  <label
+                    for="key"
+                    class="absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-440 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm"
+                    >Master Key</label
+                  >
+                </div>
+                <div class="relative">
+                  <button
+                    class="bg-blue-500 text-white rounded-md px-2 py-1"
+                    @click="App.Create(user)"
+                  >
+                    Create
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useApp } from "../stores/index";
 export default {
+  setup() {
+    const App = useApp();
+    return {
+      App,
+    };
+  },
+  created() {},
   data() {
     return {
       open: false,
