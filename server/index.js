@@ -101,7 +101,7 @@ app.put('/update/:id', middleware.checkMasterKey, async (req, res) => {
 });
 
 // DELETE
-app.delete('/delete/:id', middleware.checkMasterKey, async (req, res) => {
+app.delete('/delete/:id', async (req, res) => {
   try {
     const docId = req.params.id;
     await db.collection('manage').doc(docId).delete();
