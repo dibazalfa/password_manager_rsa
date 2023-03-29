@@ -123,7 +123,6 @@ app.get("/get/:uid", async(req, res) => {
       const account = rsa.decryptRSA(doc.data().account, privateKey);
       const username = rsa.decryptRSA(doc.data().username, privateKey);
       const password = rsa.decryptRSA(doc.data().password, privateKey);
-      const edit = edit
       // const userId = userId
       data.push({ id: doc.id, account, username, password});
     });
