@@ -1,4 +1,5 @@
 <template>
+  <Layout>
   <div class="h-screen">
     <Header />
     <!-- page content -->
@@ -24,7 +25,7 @@
                     type="text"
                     class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                     placeholder="Input Account"
-                    v-model="App.input.user.account"
+                    v-model="App.input.acc.account"
                   />
                   <label
                     for="account"
@@ -40,7 +41,7 @@
                     type="text"
                     class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                     placeholder="Input username"
-                    v-model="App.input.user.username"
+                    v-model="App.input.acc.username"
                   />
                   <label
                     for="username"
@@ -56,7 +57,7 @@
                     type="password"
                     class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                     placeholder="Password"
-                    v-model="App.input.user.password"
+                    v-model="App.input.acc.password"
                   />
                   <label
                     for="password"
@@ -72,7 +73,7 @@
                     type="password"
                     class="peer placeholder-transparent h-10 w-full border-b-2 border-gray-300 text-gray-900 focus:outline-none focus:borer-rose-600"
                     placeholder="key"
-                    v-model="App.input.user.key"
+                    v-model="App.input.acc.key"
                   />
                   <label
                     for="key"
@@ -83,7 +84,7 @@
                 <div class="relative">
                   <button
                     class="bg-blue-500 text-white rounded-md px-2 py-1 transform active:scale-75 transition-transform"
-                    @click="App.addAccount(App.input.user)"
+                    @click="App.addAccount(App.input.acc)"
                   >
                     Create
                   </button>
@@ -95,10 +96,13 @@
       </div>
     </div>
   </div>
+</Layout>
 </template>
 
 <script>
 import { useApp } from "../stores/index";
+import Layout from "../layouts/Layout.vue";
+
 export default {
   setup() {
     const App = useApp();
@@ -113,6 +117,10 @@ export default {
       dimmer: true,
       right: false,
     };
+  },
+  // name: "Layout",
+  components: {
+    Layout,
   },
   methods: {
     toggle() {

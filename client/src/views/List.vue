@@ -1,4 +1,5 @@
 <template>
+  <Layout>
   <div>
      <!-- membuat tabel -->
      <div class="w-full max-w-3xl max-h-full mx-auto">
@@ -95,16 +96,22 @@
     
            
    </div>
+   </Layout>
  </template>
 
 <script>
 import {useApp} from '../stores/index';
+import Layout from "../layouts/Layout.vue";
+
 export default {
   setup() {
     const App = useApp();
     return {
       App,
     }
+  },
+  components: {
+    Layout,
   },
   mounted() {
     this.App.getAccount();

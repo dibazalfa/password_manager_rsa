@@ -94,8 +94,8 @@
   </template>
   
   <script>
-  import Header from "./Header.vue";
-  import Footer from "./Footer.vue";
+  // import Header from "./Header.vue";
+  // import Footer from "./Footer.vue";
   import {useApp} from '../stores/index';
   
   export default {
@@ -107,8 +107,8 @@
     },
     name: "Layout",
     components: {
-      Header,
-      Footer,
+      // Header,
+      // Footer,
     },
     data() {
       return {
