@@ -139,7 +139,7 @@
 
     <!-- page content -->
     <div class="mt-8 flex flex-col justify-center sm:py-12">
-      <div class="relative py-4 sm:max-w-xl sm:mx-auto">
+      <div class="relative py-3 sm:max-w-xl sm:mx-auto">
         <div
           class="absolute inset-0 bg-gradient-to-r from-pink-300 to-violet-300 shadow-lg transform -skew-y-6 sm:skew-y-0 sm:-rotate-6 sm:rounded-3xl"
         ></div>
