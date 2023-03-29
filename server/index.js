@@ -88,7 +88,7 @@ app.post('/create', middleware.checkMasterKey, async (req, res) => {
 });
 
 // GET
-app.get('/get', async (req, res) => {
+app.get('/getAll', async (req, res) => {
   try {
     const querySnapshot = await db.collection('manage').get();
     const data = [];
@@ -123,6 +123,7 @@ app.get("/get/:uid", async(req, res) => {
       const account = rsa.decryptRSA(doc.data().account, privateKey);
       const username = rsa.decryptRSA(doc.data().username, privateKey);
       const password = rsa.decryptRSA(doc.data().password, privateKey);
+      const edit = doc.data().edit
       // const userId = userId
       data.push({ id: doc.id, account, username, password});
     });

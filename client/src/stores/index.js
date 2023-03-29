@@ -118,31 +118,20 @@ export const useApp = defineStore({
             this.input.acc.username = "";
             this.input.acc.password = "";
             this.input.acc.key = "";
-        },
+        },  
         async getAccount() {
             // let that = this
-            console.log(localStorage.getItem("userId"))
-            axios.get("http://localhost:3000/get/")            
+            const uid = localStorage.getItem("userId")
+            console.log(uid)
+            axios.get(`http://localhost:3000/get/${uid}`)            
             .then(res => {
-                this.manage = res.data.data
-                this.manage.forEach(acc=>{
+                this.manage = res.data
+                this.manage.forEach((acc) => {
                   acc.edit = false
                 })
-                console.log("test")
-                console.log(res.data.data)
+                console.log(res.data)
             })
         },
-
-        // async getAccount(acc) {
-        //     console.log(acc)
-        //     await axios.get(`http://localhost:3000/get/${acc.id}`)
-        //     .then((response) => {
-        //         if(response.status) {
-        //           this.manage = res.data.data
-        //           console.log("test")
-        //         }
-        //     })
-        // },
         async editAccount(acc) {
             let key = this.input.acc.key;
             console.log(acc)
