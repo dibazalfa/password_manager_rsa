@@ -5,7 +5,7 @@ import "./assets/main.css";
 <template>
   <div>
   <RouterView />
-    <router-link to="/">Create</router-link>
+    <router-link to="/create">Create</router-link>
     <br>
     <router-link to="/about">List</router-link>
   </div>

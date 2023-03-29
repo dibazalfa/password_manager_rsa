@@ -29,55 +29,127 @@ export const useApp = defineStore({
         users: [],
         manage: [],
         input: {
-            user: {
+            acc: {
                 account: "",
                 username: "",
                 password: "",
                 key: "",
                 edit: false,
             },
+            user: {
+                email: "",
+                password: "",
+            }
         }
     }),
     actions: {
-        async addAccount(user) {
-            console.log(`account: ${user.account}`);
-            console.log(`username: ${user.username}`);
-            console.log(`password: ${user.password}`);
-            console.log(`key: ${user.key}`);
+        async Register(user) {
+            await axios.post('http://127.0.0.1:3000/register', {
+              // nama: user.name,
+              email: user.email,
+              password: user.password
+            })
+              .then((response) => {
+                if (response.status) {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Register Success',
+                    text: `You have register with an email: ${user.email}`,
+                    footer: '<a href="login">Continue to Login</a>'
+                  })
+                }
+              }, (error) => {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'There is an Error',
+                  text: `You failed to register with this email: ${user.email}`,
+                })
+              });
+            // this.input.user.name = '';
+            this.input.user.email = '';
+            this.input.user.password = '';
+          },
+          async Login(user) {
+            await axios.post('http://127.0.0.1:3000/login', {
+              email: user.email,
+              password: user.password
+            })
+              .then((response) => {
+                console.log(response.data.userid)
+                  localStorage.setItem("userId", response.data.userid )
+                  this.router.push("/create");
+              }).catch((err) => {
+                (error) => {
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Check Your Email / Password again',
+                    text: `You failed to login with this email: ${user.email}`,
+                  })
+                }
+              });
+            this.input.user.email = '';
+            this.input.user.password = '';
+          },
+          async Logout() {
+            this.user = null;
+            this.router.push("/login")
+          },
+        async addAccount(acc) {
+            console.log(`account: ${acc.account}`);
+            console.log(`username: ${acc.username}`);
+            console.log(`password: ${acc.password}`);
+            console.log(`key: ${acc.key}`);
+            const uid = localStorage.getItem("userId")
+            console.log(uid)
             await axios.post("http://localhost:3000/create", {
-                account: user.account,
-                username: user.username,
-                password: user.password,
-                key: user.key,
-                edit: user.edit
+                account: acc.account,
+                username: acc.username,
+                password: acc.password,
+                key: acc.key,
+                edit: acc.edit,
+                userId: uid
             })
             .then((response) => {
                 if(response.status) {
                     console.log(response)
                 }
             })
-            this.input.user.account = "";
-            this.input.user.username = "";
-            this.input.user.password = "";
-            this.input.user.key = "";
+            this.input.acc.account = "";
+            this.input.acc.username = "";
+            this.input.acc.password = "";
+            this.input.acc.key = "";
         },
         async getAccount() {
-            let that = this
-            axios.get("http://localhost:3000/get")
+            // let that = this
+            console.log(localStorage.getItem("userId"))
+            axios.get("http://localhost:3000/get/")            
             .then(res => {
-                that.manage = res.data.data
-                that.manage.forEach(user=>{
-                    user.edit = false
+                this.manage = res.data.data
+                this.manage.forEach(acc=>{
+                  acc.edit = false
                 })
+                console.log("test")
+                console.log(res.data.data)
             })
         },
-        async editAccount(user) {
-            let key = this.input.user.key;
-            console.log(user)
-            await axios.put(`http://localhost:3000/update/${user.id}`, {
-                account: user.account,
-                username: user.username,
-                password: user.password,
+
+        // async getAccount(acc) {
+        //     console.log(acc)
+        //     await axios.get(`http://localhost:3000/get/${acc.id}`)
+        //     .then((response) => {
+        //         if(response.status) {
+        //           this.manage = res.data.data
+        //           console.log("test")
+        //         }
+        //     })
+        // },
+        async editAccount(acc) {
+            let key = this.input.acc.key;
+            console.log(acc)
+            await axios.put(`http://localhost:3000/update/${acc.id}`, {
+                account: acc.account,
+                username: acc.username,
+                password: acc.password,
                 key
             })
             .then((response) => {

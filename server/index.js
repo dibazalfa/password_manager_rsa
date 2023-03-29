@@ -1,6 +1,10 @@
 import express from "express";
-import { db } from "./config.js";
+import { db, auth } from "./config.js";
 import bodyparser from "body-parser";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import {
   onSnapshot,
   collection,
@@ -21,12 +25,43 @@ const port = 3000;
 const privateKey = { d: 317, n: 469 };
 const publicKey = { e: 5, n: 469 };
 
+app.post("/register", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    console.log(auth, email, password);
+    const user = await createUserWithEmailAndPassword(auth, email, password);
+    res.status(200).json({ 
+        message: "User created successfully" 
+    });
+  } catch (error) {
+    res.status(400).json({ 
+        message: error.message 
+    });
+  }  
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    console.log(email, password);
+    const user = await signInWithEmailAndPassword(auth, email, password);
+    res.status(200);
+    res.send({
+      userid : user.user.uid
+    })
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 // CREATE
 app.post('/create', middleware.checkMasterKey, async (req, res) => {
   try {
     let account = req.body.account;
     let username = req.body.username;
     let password = req.body.password;
+    let userId = req.body.userId;
+    let edit = req.body.edit
 
     const querySnapshot = await db.collection('manage').get();
     querySnapshot.forEach(async (doc) => {
@@ -34,6 +69,8 @@ app.post('/create', middleware.checkMasterKey, async (req, res) => {
         account: rsa.encryptRSA(account, publicKey),
         username: rsa.encryptRSA(username, publicKey),
         password: rsa.encryptRSA(password, publicKey),
+        userId : userId,
+        edit: false,
       });
     });
     return res.status(200).send({
@@ -59,7 +96,7 @@ app.get('/get', async (req, res) => {
       const account = rsa.decryptRSA(doc.data().account, privateKey);
       const username = rsa.decryptRSA(doc.data().username, privateKey);
       const password = rsa.decryptRSA(doc.data().password, privateKey);
-      data.push({ id: doc.id, account, username, password });
+      data.push({ id: doc.id, account, username, password});
     });
     return res.status(200).send({
       code: 200,
@@ -74,6 +111,25 @@ app.get('/get', async (req, res) => {
     });
   }
 });
+
+//GET PER uiD 
+app.get("/get/:uid", async(req, res) => {
+  const uid = req.params.uid
+  const q = query(collection(db, "manage"), where("userId", "==", uid));
+  const querySnapshot= await getDocs(q);
+  const data = [];
+  console.log(uid)
+    querySnapshot.forEach((doc) => {
+      const account = rsa.decryptRSA(doc.data().account, privateKey);
+      const username = rsa.decryptRSA(doc.data().username, privateKey);
+      const password = rsa.decryptRSA(doc.data().password, privateKey);
+      const edit = edit
+      // const userId = userId
+      data.push({ id: doc.id, account, username, password});
+    });
+    res.send(data)
+
+})
 
 // UPDATE
 app.put('/update/:id', middleware.checkMasterKey, async (req, res) => {
