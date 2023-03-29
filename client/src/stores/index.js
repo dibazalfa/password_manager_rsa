@@ -12,12 +12,12 @@ import Swal from 'sweetalert2';
 
 // isikan firebaseConfig disini
 const firebaseConfig = {
-    apiKey: "AIzaSyCb1zeNb6DP-Dz-IiC4MB8aImaExLv4pOw",
-    authDomain: "passwordmanager-e08e4.firebaseapp.com",
-    projectId: "passwordmanager-e08e4",
-    storageBucket: "passwordmanager-e08e4.appspot.com",
-    messagingSenderId: "256643935779",
-    appId: "1:256643935779:web:ec2760adc6e1eba26b8b96"
+    apiKey: "AIzaSyCbRTM0eSuKFfoN1wyscgJqUW9Kpku3trM",
+    authDomain: "rsa-password.firebaseapp.com",
+    projectId: "rsa-password",
+    storageBucket: "rsa-password.appspot.com",
+    messagingSenderId: "334746649365",
+    appId: "1:334746649365:web:2f65cf88596e43e4fbdf1c"
   };
 
 const app = initializeApp(firebaseConfig);
@@ -27,28 +27,74 @@ export const useApp = defineStore({
     id: "App",
     state: () => ({
         users: [],
+        manage: [],
         input: {
             user: {
                 account: "",
+                username: "",
                 password: "",
                 key: "",
+                edit: false,
             },
         }
     }),
     actions: {
-        async Create(user) {
-            // console.log(`account: ${this.input.user.account}`);
-            // console.log(`password: ${this.input.user.password}`);
-            // console.log(`key: ${this.input.user.key}`);
-            await axios.post('http://localhost:3000/create', {
-                account: this.input.user.account,
-                password: this.input.user.password,
-                key: this.input.user.key
+        async addAccount(user) {
+            console.log(`account: ${user.account}`);
+            console.log(`username: ${user.username}`);
+            console.log(`password: ${user.password}`);
+            console.log(`key: ${user.key}`);
+            await axios.post("http://localhost:3000/create", {
+                account: user.account,
+                username: user.username,
+                password: user.password,
+                key: user.key,
+                edit: user.edit
             })
             .then((response) => {
-                if (response.status) {
-                    console.log(response);
+                if(response.status) {
+                    console.log(response)
                 }
+            })
+            this.input.user.account = "";
+            this.input.user.username = "";
+            this.input.user.password = "";
+            this.input.user.key = "";
+        },
+        async getAccount() {
+            let that = this
+            axios.get("http://localhost:3000/get")
+            .then(res => {
+                that.manage = res.data.data
+                that.manage.forEach(user=>{
+                    user.edit = false
+                })
+            })
+        },
+        async editAccount(user) {
+            let key = this.input.user.key;
+            console.log(user)
+            await axios.put(`http://localhost:3000/update/${user.id}`, {
+                account: user.account,
+                username: user.username,
+                password: user.password,
+                key
+            })
+            .then((response) => {
+                if(response.status) {
+                    console.log(response)
+                    key = '';
+                }
+            })
+        },
+        async deleteAccount(user_id) {
+            await axios.delete("http://localhost:3000/delete/" + user_id)
+            .then((response) => {
+                if(response.status) {
+                    console.log(response)
+                }
+                this.getAccount()
+                this.manage = []
             })
         }
     }

@@ -3,13 +3,21 @@
     <label>Masukkan Account</label>
     <input type="text" v-model="App.input.user.account" >
     <br>
+    <label>Masukkan Username</label>
+    <input type="text" v-model="App.input.user.username" >
+    <br>
     <label>Masukkan Password</label>
     <input type="password" v-model="App.input.user.password">
     <br>
     <label>Masukkan Master Key</label>
     <input type="password" v-model="App.input.user.key">
     <br>
-    <button @click="App.Create(user)">Create</button>
+    <button @click="App.addAccount(App.input.user)">Create</button>
+
+    <!-- <div v-for="user in App.users" :key="user.id">
+      {{ user.account }}
+      {{ user.password }}
+    </div> -->
   </div>
 </template>
 
@@ -23,7 +31,6 @@ export default {
     }
   },
   created() {
-
   }
 }
 </script>

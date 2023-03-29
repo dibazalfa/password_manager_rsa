@@ -25,12 +25,14 @@ const publicKey = { e: 5, n: 469 };
 app.post('/create', middleware.checkMasterKey, async (req, res) => {
   try {
     let account = req.body.account;
+    let username = req.body.username;
     let password = req.body.password;
 
     const querySnapshot = await db.collection('manage').get();
     querySnapshot.forEach(async (doc) => {
       await db.collection('manage').add({
         account: rsa.encryptRSA(account, publicKey),
+        username: rsa.encryptRSA(username, publicKey),
         password: rsa.encryptRSA(password, publicKey),
       });
     });
@@ -55,8 +57,9 @@ app.get('/get', async (req, res) => {
     const data = [];
     querySnapshot.forEach((doc) => {
       const account = rsa.decryptRSA(doc.data().account, privateKey);
+      const username = rsa.decryptRSA(doc.data().username, privateKey);
       const password = rsa.decryptRSA(doc.data().password, privateKey);
-      data.push({ id: doc.id, account, password });
+      data.push({ id: doc.id, account, username, password });
     });
     return res.status(200).send({
       code: 200,
@@ -77,9 +80,11 @@ app.put('/update/:id', middleware.checkMasterKey, async (req, res) => {
   try {
     const docId = req.params.id;
     const account = req.body.account;
+    const username = req.body.username;
     const password = req.body.password;
     await db.collection('manage').doc(docId).update({
       account: rsa.encryptRSA(account, publicKey),
+      username: rsa.encryptRSA(username, publicKey),
       password: rsa.encryptRSA(password, publicKey)
     });
     return res.status(200).send({
