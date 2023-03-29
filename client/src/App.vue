@@ -1,13 +1,17 @@
-<script>
-import "./assets/main.css";
-</script>
-
 <template>
-  <div>
-  <RouterView />
-    <router-link to="/create">Create</router-link>
-    <br>
-    <router-link to="/about">List</router-link>
-  </div>
+  <Layout>
+    <RouterView />
+  </Layout>
 </template>
 
+<script>
+import "./assets/main.css";
+import Layout from "./layouts/Layout.vue";
+
+export default {
+  name: "App",
+  components: {
+    Layout,
+  },
+};
+</script>
